@@ -36,6 +36,7 @@
         var markers = [];
         var map;
         var infowindow;
+
         function initMap() {
             var Toronto = { lat: 43.6532, lng: -79.3832 };
 
@@ -43,31 +44,33 @@
                 center: Toronto,
                 zoom: 11
             });
+            infowindow = new google.maps.InfoWindow({ content: document.getElementById("form") });
 
-            var contentString = "Helloksjfkajk;dfjk;ajsfkl;jasldkfj";
-            infowindow = new google.maps.InfoWindow({ content: contentString });
-            
-            
+
             map.addListener('click', function (event) {
                 addMarker(event.latLng);
             });
 
             addMarker(Toronto);
-        }
-        
-        
+        };
+
+                
+
         function addMarker(location) {
             let marker = new google.maps.Marker({
                 position: location,
-                map: map
+                map: map,
+                draggable: true,
             });
             markers.push(marker);
-            markers[markers.length - 1].addListener('click', function() {
-                    infowindow.open(map, markers[markers.length - 1]);
-            });
-        }
+            markers[markers.length - 1].addListener('click', function () {
+                infowindow.open(map, markers[markers.length - 1]);
+            })
+            console.log(markers[0].getPosition().lat());
+            console.log(markers[0].getPosition().lng());
+        };
 
-        
+
         function hideMarkers() {
             for (let i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);
