@@ -6,14 +6,17 @@ var port = 8080 || process.env.PORT;
 var uri = 'mongodb+srv://wlto:myClusterIsFunny009@cluster0-o3gou.mongodb.net/test';
 
 // Connects to the database
-MongoClient.connect(uri, function(err, client) {
+MongoClient.connect(uri, (err, client) => {
   // Getting the collection
-  const collection = client.db('test').collection('devices');
+  const collection = client.db('Students').collection('students');
+  let stuffs = collection.find({}).toArray((err, docs) => {
+    console.log(docs); // Got the records!!!!!!!!!
+  });
   // Close the connection (I think)
   client.close();
 });
 
-// Route to everything
+// Route to home
 app.get('/', (req, res) => {
   res.status(200).json({
     'cool': 'beans'
