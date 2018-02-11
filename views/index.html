@@ -32,6 +32,7 @@
     <input id="location-lng" type="hidden" name="locationLng">
   </form>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
     var markers = [];
     var map;
@@ -56,7 +57,31 @@
         addMarker(event.latLng);
       });
 
-      addMarker(Toronto);
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/getReports",
+        success: function(data) {
+          if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+              addMarker({
+                lat: data[i].location.lat,
+                lng: data[i].location.lng
+              });
+              console.log('Name: ' + data[i].location.name);
+              console.log('Latitude: ' + data[i].location.lat);
+              console.log('Longtitude: ' + data[i].location.lng);
+              console.log('=======================');
+            }
+          }
+        },
+        // error: function(jqXHR, textStatus, err) {
+        //   //show error message
+        //   alert('text status '+textStatus+', err '+err)
+        // }
+      });
+      // $.get('localhost:8080/getReports', function (data) {
+      //   console.log(data);
+      // });
     };
 
     function addMarker(location) {
@@ -69,7 +94,7 @@
       markers.push(marker);
       markers[markers.length - 1].addListener('click', function() {
         infowindow.open(map, this);
-      })
+      });
     };
 
     function output() {

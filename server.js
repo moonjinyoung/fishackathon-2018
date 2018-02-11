@@ -31,6 +31,14 @@ MongoClient.connect(uri, (err, client) => {
 // GET routes
 //
 
+app.get('/getReports', (req, res) => {
+  const collection = db.collection('Reports');
+  collection.find({}).toArray((err, docs) => {
+    documents = docs;
+    res.json(documents);
+  });
+});
+
 // Route to home
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, "/views/index.html"));
@@ -47,8 +55,8 @@ app.get('*', (req, res) => {
 app.post('/submitReport', (req, res) => {
   let newReport = {
     'location': {
-      'lat': req.body.locationLat,
-      'lng': req.body.locationLng,
+      'lat': parseFloat(req.body.locationLat),
+      'lng': parseFloat(req.body.locationLng),
       'name': req.body.locationName
     },
     'type': req.body.reportType,
