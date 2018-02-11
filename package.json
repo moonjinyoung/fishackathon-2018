@@ -19,8 +19,6 @@
   "homepage": "https://github.com/wlto/fishackathon-2018#readme",
   "dependencies": {
     "express": "^4.16.2",
-    "mongodb": "^3.0.2",
-    "mongoose": "^5.0.4",
-    "sequelize": "^4.33.2"
+    "mongodb": "^3.0.2"
   }
 }

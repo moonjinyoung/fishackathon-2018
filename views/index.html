@@ -5,66 +5,31 @@
   <title>Simple Map</title>
   <meta name="viewport" content="initial-scale=1.0">
   <meta charset="utf-8">
-  <style>
-    /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-
-    #map {
-      height: 100%;
-      width: 100%;
-      margin: auto;
-
-    }
-
-    body {
-      overflow: hidden;
-    }
-
-    /* Optional: Makes the sample page fill the window. */
-
-    html,
-    body {
-      height: 100%;
-      margin: auto;
-      padding: 0;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-  <!-- <input onclick="hideMarkers();" type="button" value="Hide Markers">
-  <input onclick="showMarkers();" type="button" value="Show All Markers"> -->
-
   <div id="map"></div>
-  <div id="form">
-    <table>
-      <tr>
-        <td>Name:</td>
-        <td>
-          <input type='text' id='name' /> </td>
-      </tr>
-      <tr>
-        <td>Address:</td>
-        <td>
-          <input type='text' id='address' /> </td>
-      </tr>
-      <tr>
-        <td>Type:</td>
-        <td>
-          <select id='type'> +
-                        <option value='bar' SELECTED>bar</option>
-                        <option value='restaurant'>restaurant</option>
-                    </select>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <input type='button' value='Save' onclick='output()' />
-        </td>
-      </tr>
-    </table>
-  </div>
+
+  <form id="report-form" class="report-submission" action="/submitReport" method="POST">
+    <select id="report-type"> +
+        <option value="Social" selected>Social</option>
+        <option value="Environmental">Environmental</option>
+        <option value="Biological">Biological</option>
+    </select>
+    <div class="report-location-name">
+      <label for="location-name">Name:</label>
+      <input type="text" id="location-name" />
+    </div>
+    <div class="report-description">
+      <label for="r-description">Description:</label>
+      <input type="text" id="r-description" />
+    </div>
+    <div class="report-submission">
+      <input type="submit" value="Submit Report"/>
+    </div>
+  </form>
+
   <script>
     var markers = [];
     var map;
@@ -81,7 +46,7 @@
         zoom: 11
       });
       infowindow = new google.maps.InfoWindow({
-        content: document.getElementById("form")
+        content: document.getElementById("report-form")
       });
 
 
@@ -103,23 +68,10 @@
       })
     };
 
-
-    /*function hideMarkers() {
-      for (let i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
-      }
-    };
-
-    function showMarkers() {
-      for (let i = 0; i < markers.length; i++) {
-        markers[i].setMap(map);
-      }
-    };*/
-
     function output() {
-      console.log(document.getElementById('name').value);
-      console.log(document.getElementById('address').value);
-      console.log(document.getElementById('type').value);
+      console.log(document.getElementById('report-type').value);
+      console.log(document.getElementById('location-name').value);
+      console.log(document.getElementById('r-description').value);
     };
   </script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtYZYjBYgbfX96dGUCJY8Pf579U--aubU&callback=initMap">
