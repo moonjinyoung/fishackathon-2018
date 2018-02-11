@@ -32,11 +32,15 @@
     <input id="location-lng" type="hidden" name="locationLng">
   </form>
 
+  <div id="report-information">
+  </div>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
     var markers = [];
+    var infoMarkers = [];
     var map;
-    var infowindow;
+    var infowindow, reportInfo;
 
     function initMap() {
       var Toronto = {
@@ -53,6 +57,8 @@
         content: document.getElementById("report-form")
       });
 
+
+
       map.addListener('click', function(event) {
         addMarker(event.latLng);
       });
@@ -63,10 +69,36 @@
         success: function(data) {
           if (data.length > 0) {
             for (var i = 0; i < data.length; i++) {
-              addMarker({
-                lat: data[i].location.lat,
-                lng: data[i].location.lng
+              let marker = new google.maps.Marker({
+                position: {
+                  lat: data[i].location.lat,
+                  lng: data[i].location.lng
+                },
+                map: map
               });
+              let reportInfoElem = document.createElement('div');
+              let reportInfo = new google.maps.InfoWindow({
+                content: reportInfoElem
+              });
+              // document.getElementById('location-lat').value = marker.getPosition().lat();
+              // document.getElementById('location-lng').value = marker.getPosition().lng();
+              infoMarkers.push(marker);
+              let locationName = document.createElement('h3');
+              let reportType = document.createElement('p');
+              let reportDesc = document.createElement('p');
+
+              locationName.innerText =  data[i].location.name;
+              reportType.innerText = data[i].type;
+              reportDesc.innerText = data[i].description;
+              reportInfo.content.appendChild(locationName);
+              reportInfo.content.appendChild(reportType);
+              reportInfo.content.appendChild(reportDesc);
+
+              infoMarkers[i].addListener('click', function() {
+                reportInfo.open(map, this);
+              });
+
+
               console.log('Name: ' + data[i].location.name);
               console.log('Latitude: ' + data[i].location.lat);
               console.log('Longtitude: ' + data[i].location.lng);
