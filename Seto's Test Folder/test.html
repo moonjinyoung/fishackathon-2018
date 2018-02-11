@@ -11,8 +11,8 @@
 
         #map {
             height: 100%;
-            width: 100%;
-            margin: auto;
+            margin: 0;
+            padding: 0;
         }
 
         /* Optional: Makes the sample page fill the window. */
@@ -20,7 +20,7 @@
         html,
         body {
             height: 100%;
-            margin: auto;
+            margin: 0;
             padding: 0;
         }
 
@@ -28,12 +28,28 @@
             height: 500px;
 
         }
+
+        #buttons {
+            position: absolute;
+            top: 10px;
+            left: 25%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+            text-align: center;
+            font-family: 'Roboto', 'sans-serif';
+            line-height: 30px;
+            padding-left: 10px;
+        }
     </style>
 </head>
 
 <body>
-    <input onclick="hideMarkers();" type="button" value="Hide Markers">
-    <input onclick="showMarkers();" type="button" value="Show All Markers">
+    <div id="buttons">
+        <input onclick="hideMarkers();" type="button" value="Hide Markers">
+        <input onclick="showMarkers();" type="button" value="Show All Markers">
+    </div>
 
     <div id="map"></div>
     <div id="form">
@@ -95,7 +111,7 @@
                 map: map
             });
             markers.push(marker);
-            markers[markers.length - 1].addListener('click', function() {
+            markers[markers.length - 1].addListener('click', function () {
                 infowindow.open(map, this);
             })
         };
