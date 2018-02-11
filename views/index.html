@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Simple Map</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <form id="report-form" class="report-submission" action="/submitReport" method="POST">
+    <select id="report-type"> +
+        <option value="Social" selected>Social</option>
+        <option value="Environmental">Environmental</option>
+        <option value="Biological">Biological</option>
+    </select>
+    <div class="report-location-name">
+      <label for="location-name">Name:</label>
+      <input type="text" id="location-name" />
+    </div>
+    <div class="report-description">
+      <label for="r-description">Description:</label>
+      <input type="text" id="r-description" />
+    </div>
+    <div class="report-submission">
+      <input type="submit" value="Submit Report"/>
+    </div>
+  </form>
+
+  <script>
+    var markers = [];
+    var map;
+    var infowindow;
+
+    function initMap() {
+      var Toronto = {
+        lat: 43.6532,
+        lng: -79.3832
+      };
+
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: Toronto,
+        zoom: 11
+      });
+      infowindow = new google.maps.InfoWindow({
+        content: document.getElementById("report-form")
+      });
+
+
+      map.addListener('click', function(event) {
+        addMarker(event.latLng);
+      });
+
+      addMarker(Toronto);
+    };
+
+    function addMarker(location) {
+      let marker = new google.maps.Marker({
+        position: location,
+        map: map
+      });
+      markers.push(marker);
+      markers[markers.length - 1].addListener('click', function() {
+        infowindow.open(map, this);
+      })
+    };
+
+    function output() {
+      console.log(document.getElementById('report-type').value);
+      console.log(document.getElementById('location-name').value);
+      console.log(document.getElementById('r-description').value);
+    };
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtYZYjBYgbfX96dGUCJY8Pf579U--aubU&callback=initMap">
+  </script>
+</body>
+
+</html>

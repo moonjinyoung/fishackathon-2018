@@ -1,0 +1,24 @@
+{
+  "name": "fishackathon-2018",
+  "version": "1.0.0",
+  "description": "Fish fish 🐟 - Development branch",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wlto/fishackathon-2018.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wlto/fishackathon-2018/issues"
+  },
+  "homepage": "https://github.com/wlto/fishackathon-2018#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongodb": "^3.0.2"
+  }
+}

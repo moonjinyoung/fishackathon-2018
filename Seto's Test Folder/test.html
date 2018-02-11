@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+
+        #map {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #form {
+            height: 500px;
+
+        }
+
+        #buttons {
+            position: absolute;
+            top: 10px;
+            left: 25%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+            text-align: center;
+            font-family: 'Roboto', 'sans-serif';
+            line-height: 30px;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="buttons">
+        <input onclick="hideMarkers();" type="button" value="Hide Markers">
+        <input onclick="showMarkers();" type="button" value="Show All Markers">
+    </div>
+
+    <div id="map"></div>
+    <div id="form">
+        <table>
+            <tr>
+                <td>Type:</td>
+                <td>
+                    <select id='type'> +
+                        <option value='Social' SELECTED>Social</option>
+                        <option value='Environmental'>Environmental</option>
+                        <option value='Biological'>Biological</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Name of Location:</td>
+                <td>
+                    <input type='text' id='nameLocation' /> </td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td>
+                    <textarea type='text' id='description'></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type='submit' value='Submit Report' action="/submit" method="POST" onclick='output()' />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        var markers = [];
+        var map;
+        var infowindow;
+
+        function initMap() {
+            var Toronto = { lat: 43.6532, lng: -79.3832 };
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: Toronto,
+                zoom: 11
+            });
+            infowindow = new google.maps.InfoWindow({ content: document.getElementById("form") });
+
+
+            map.addListener('click', function (event) {
+                addMarker(event.latLng);
+            });
+
+            addMarker(Toronto);
+        };
+
+        function addMarker(location) {
+            let marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+            markers.push(marker);
+            markers[markers.length - 1].addListener('click', function () {
+                infowindow.open(map, this);
+            })
+        };
+
+
+        function hideMarkers() {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+        };
+
+        function showMarkers() {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+        };
+
+        function output() {
+            console.log(document.getElementById('type').value);
+            console.log(document.getElementById('nameLocation').value);
+            console.log(document.getElementById('description').value);
+        };
+
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtYZYjBYgbfX96dGUCJY8Pf579U--aubU&callback=initMap">
+    </script>
+</body>
+
+</html>
