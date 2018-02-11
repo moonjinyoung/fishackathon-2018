@@ -12,28 +12,35 @@
   <div id="map"></div>
 
   <form id="report-form" class="report-submission" action="/submitReport" method="POST">
-    <select id="report-type"> +
+    <select id="report-type" name="reportType"> +
         <option value="Social" selected>Social</option>
         <option value="Environmental">Environmental</option>
         <option value="Biological">Biological</option>
     </select>
     <div class="report-location-name">
       <label for="location-name">Name:</label>
-      <input type="text" id="location-name" />
+      <input type="text" id="location-name" name="locationName" />
     </div>
     <div class="report-description">
       <label for="r-description">Description:</label>
-      <input type="text" id="r-description" />
+      <input type="text" id="report-desc" name="reportDesc" />
     </div>
     <div class="report-submission">
       <input type="submit" value="Submit Report"/>
     </div>
+    <input id="location-lat" type="hidden" name="locationLat">
+    <input id="location-lng" type="hidden" name="locationLng">
   </form>
 
+  <div id="report-information">
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
     var markers = [];
+    var infoMarkers = [];
     var map;
-    var infowindow;
+    var infowindow, reportInfo;
 
     function initMap() {
       var Toronto = {
@@ -45,16 +52,68 @@
         center: Toronto,
         zoom: 11
       });
+
       infowindow = new google.maps.InfoWindow({
         content: document.getElementById("report-form")
       });
+
 
 
       map.addListener('click', function(event) {
         addMarker(event.latLng);
       });
 
-      addMarker(Toronto);
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/getReports",
+        success: function(data) {
+          if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+              let marker = new google.maps.Marker({
+                position: {
+                  lat: data[i].location.lat,
+                  lng: data[i].location.lng
+                },
+                map: map
+              });
+              let reportInfoElem = document.createElement('div');
+              let reportInfo = new google.maps.InfoWindow({
+                content: reportInfoElem
+              });
+              // document.getElementById('location-lat').value = marker.getPosition().lat();
+              // document.getElementById('location-lng').value = marker.getPosition().lng();
+              infoMarkers.push(marker);
+              let locationName = document.createElement('h3');
+              let reportType = document.createElement('p');
+              let reportDesc = document.createElement('p');
+
+              locationName.innerText =  data[i].location.name;
+              reportType.innerText = data[i].type;
+              reportDesc.innerText = data[i].description;
+              reportInfo.content.appendChild(locationName);
+              reportInfo.content.appendChild(reportType);
+              reportInfo.content.appendChild(reportDesc);
+
+              infoMarkers[i].addListener('click', function() {
+                reportInfo.open(map, this);
+              });
+
+
+              console.log('Name: ' + data[i].location.name);
+              console.log('Latitude: ' + data[i].location.lat);
+              console.log('Longtitude: ' + data[i].location.lng);
+              console.log('=======================');
+            }
+          }
+        },
+        // error: function(jqXHR, textStatus, err) {
+        //   //show error message
+        //   alert('text status '+textStatus+', err '+err)
+        // }
+      });
+      // $.get('localhost:8080/getReports', function (data) {
+      //   console.log(data);
+      // });
     };
 
     function addMarker(location) {
@@ -62,10 +121,12 @@
         position: location,
         map: map
       });
+      document.getElementById('location-lat').value = marker.getPosition().lat();
+      document.getElementById('location-lng').value = marker.getPosition().lng();
       markers.push(marker);
       markers[markers.length - 1].addListener('click', function() {
         infowindow.open(map, this);
-      })
+      });
     };
 
     function output() {
