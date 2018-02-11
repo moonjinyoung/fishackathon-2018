@@ -1,37 +1,129 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Simple Map</title>
-    <meta name="viewport" content="initial-scale=1.0">
-    <meta charset="utf-8">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
+
+<head>
+  <title>Simple Map</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <style>
+    /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-      #map {
-        height: 100%;
+
+    #map {
+      height: 100%;
+      width: 100%;
+      margin: auto;
+
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    /* Optional: Makes the sample page fill the window. */
+
+    html,
+    body {
+      height: 100%;
+      margin: auto;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <input onclick="hideMarkers();" type="button" value="Hide Markers">
+  <input onclick="showMarkers();" type="button" value="Show All Markers"> -->
+
+  <div id="map"></div>
+  <div id="form">
+    <table>
+      <tr>
+        <td>Name:</td>
+        <td>
+          <input type='text' id='name' /> </td>
+      </tr>
+      <tr>
+        <td>Address:</td>
+        <td>
+          <input type='text' id='address' /> </td>
+      </tr>
+      <tr>
+        <td>Type:</td>
+        <td>
+          <select id='type'> +
+                        <option value='bar' SELECTED>bar</option>
+                        <option value='restaurant'>restaurant</option>
+                    </select>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <input type='button' value='Save' onclick='output()' />
+        </td>
+      </tr>
+    </table>
+  </div>
+  <script>
+    var markers = [];
+    var map;
+    var infowindow;
+
+    function initMap() {
+      var Toronto = {
+        lat: 43.6532,
+        lng: -79.3832
+      };
+
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: Toronto,
+        zoom: 11
+      });
+      infowindow = new google.maps.InfoWindow({
+        content: document.getElementById("form")
+      });
+
+
+      map.addListener('click', function(event) {
+        addMarker(event.latLng);
+      });
+
+      addMarker(Toronto);
+    };
+
+    function addMarker(location) {
+      let marker = new google.maps.Marker({
+        position: location,
+        map: map
+      });
+      markers.push(marker);
+      markers[markers.length - 1].addListener('click', function() {
+        infowindow.open(map, this);
+      })
+    };
+
+
+    /*function hideMarkers() {
+      for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
       }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
+    };
+
+    function showMarkers() {
+      for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
       }
-    </style>
-  </head>
-  <body>
-    <!-- Always shows a header, even in smaller screens. -->
-</div>
-<div id="map"></div>
- <script>
-   var map;
-   function initMap() {
-     map = new google.maps.Map(document.getElementById('map'), {
-       center: {lat: -34.397, lng: 150.644},
-       zoom: 8
-     });
-   }
- </script>
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJMsNRCTj0yV389DYC7WDAaS3CpjhzbKM&callback=initMap"
- async defer></script>
-  </body>
+    };*/
+
+    function output() {
+      console.log(document.getElementById('name').value);
+      console.log(document.getElementById('address').value);
+      console.log(document.getElementById('type').value);
+    };
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtYZYjBYgbfX96dGUCJY8Pf579U--aubU&callback=initMap">
+  </script>
+</body>
+
 </html>

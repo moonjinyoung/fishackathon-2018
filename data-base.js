@@ -1,13 +1,13 @@
 const Sequelize = require('sequelize');
 
-var sequelize = new Sequelize('d49eqe7m7bcr7n', 'wpyodtdrharafm', '4e66a57695c822bed35ee49d0889e0689c1a40b3e6209a968ae1766b675b430c', {     
-    host: 'ec2-107-22-183-40.compute-1.amazonaws.com',     
-    dialect: 'postgres',     
-    port: 5432,     dialectOptions: {         
-        ssl: true     
+var sequelize = new Sequelize('d49eqe7m7bcr7n', 'wpyodtdrharafm', '4e66a57695c822bed35ee49d0889e0689c1a40b3e6209a968ae1766b675b430c', {
+    host: 'ec2-107-22-183-40.compute-1.amazonaws.com',
+    dialect: 'postgres',
+    port: 5432,     dialectOptions: {
+        ssl: true
     },
     operatorsAliases: false
-}); 
+});
 
 sequelize
 .authenticate()
@@ -25,7 +25,6 @@ const Reports = sequelize.define('Reports', {
         longtitude : Sequelize.DOUBLE,
         locationName : Sequelize.String
     },
-
     type : Sequelize.String,
     message : Sequelize.String,
     datePosted : Sequelize.DATE,
@@ -33,4 +32,3 @@ const Reports = sequelize.define('Reports', {
     upvote : Sequelize.INTEGER,
     downvote : Sequelize.INTEGER
 });
-
