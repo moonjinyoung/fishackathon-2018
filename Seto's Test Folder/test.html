@@ -10,8 +10,8 @@
        * element that contains the map. */
 
         #map {
-            height: 50%;
-            width: 50%;
+            height: 100%;
+            width: 100%;
             margin: auto;
         }
 
@@ -31,7 +31,35 @@
     <input onclick="showMarkers();" type="button" value="Show All Markers">
 
     <div id="map"></div>
-
+    <div id="form">
+        <table>
+            <tr>
+                <td>Name:</td>
+                <td>
+                    <input type='text' id='name' /> </td>
+            </tr>
+            <tr>
+                <td>Address:</td>
+                <td>
+                    <input type='text' id='address' /> </td>
+            </tr>
+            <tr>
+                <td>Type:</td>
+                <td>
+                    <select id='type'> +
+                        <option value='bar' SELECTED>bar</option>
+                        <option value='restaurant'>restaurant</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type='button' value='Save' onclick='output()' />
+                </td>
+            </tr>
+        </table>
+    </div>
     <script>
         var markers = [];
         var map;
@@ -54,20 +82,18 @@
             addMarker(Toronto);
         };
 
-                
-
         function addMarker(location) {
             let marker = new google.maps.Marker({
                 position: location,
-                map: map,
-                draggable: true,
+                map: map
             });
             markers.push(marker);
             markers[markers.length - 1].addListener('click', function () {
-                infowindow.open(map, markers[markers.length - 1]);
+                let x = markers.length - 1;
+                infowindow.open(map, markers[x]);
+                console.log(x);
+                
             })
-            console.log(markers[0].getPosition().lat());
-            console.log(markers[0].getPosition().lng());
         };
 
 
@@ -83,6 +109,11 @@
             }
         };
 
+        function output() {
+            console.log(document.getElementById('name').value);
+            console.log(document.getElementById('address').value);
+            console.log(document.getElementById('type').value);
+        };
 
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtYZYjBYgbfX96dGUCJY8Pf579U--aubU&callback=initMap">
