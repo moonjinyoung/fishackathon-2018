@@ -23,6 +23,11 @@
             margin: auto;
             padding: 0;
         }
+
+        #form {
+            height: 500px;
+
+        }
     </style>
 </head>
 
@@ -34,28 +39,30 @@
     <div id="form">
         <table>
             <tr>
-                <td>Name:</td>
-                <td>
-                    <input type='text' id='name' /> </td>
-            </tr>
-            <tr>
-                <td>Address:</td>
-                <td>
-                    <input type='text' id='address' /> </td>
-            </tr>
-            <tr>
                 <td>Type:</td>
                 <td>
                     <select id='type'> +
-                        <option value='bar' SELECTED>bar</option>
-                        <option value='restaurant'>restaurant</option>
+                        <option value='Social' SELECTED>Social</option>
+                        <option value='Environmental'>Environmental</option>
+                        <option value='Biological'>Biological</option>
                     </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Name of Location:</td>
+                <td>
+                    <input type='text' id='nameLocation' /> </td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td>
+                    <textarea type='text' id='description'></textarea>
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <input type='button' value='Save' onclick='output()' />
+                    <input type='submit' value='Submit Report' action="/submit" method="POST" onclick='output()' />
                 </td>
             </tr>
         </table>
@@ -107,9 +114,9 @@
         };
 
         function output() {
-            console.log(document.getElementById('name').value);
-            console.log(document.getElementById('address').value);
             console.log(document.getElementById('type').value);
+            console.log(document.getElementById('nameLocation').value);
+            console.log(document.getElementById('description').value);
         };
 
     </script>
