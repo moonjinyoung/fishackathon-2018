@@ -30,7 +30,7 @@ module.exports.initialize = function () {
     reject(err); // reject the promise with the provided error
     });
     db.once('open', ()=>{
-    Comment = db.model("comments", commentSchema);
+    Comment = db.model("comments", Reports);
     resolve();
     });
     });
