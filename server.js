@@ -1,8 +1,12 @@
 var express = require('express');
 var MongoClient = require('mongodb').MongoClient;
+var data = require("./data-base.js");
+var dataBaseComments = require("./data-base-comment.js");
+var clientSessions = require("client-sessions");
+
 
 var app = express();
-var port = 8080 || process.env.PORT;
+var HTTP_PORT = process.env.PORT || 8080;
 var uri = 'mongodb+srv://wlto:myClusterIsFunny009@cluster0-o3gou.mongodb.net/test';
 
 // Connects to the database
