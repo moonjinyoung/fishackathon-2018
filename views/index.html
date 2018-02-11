@@ -12,22 +12,24 @@
   <div id="map"></div>
 
   <form id="report-form" class="report-submission" action="/submitReport" method="POST">
-    <select id="report-type"> +
+    <select id="report-type" name="reportType"> +
         <option value="Social" selected>Social</option>
         <option value="Environmental">Environmental</option>
         <option value="Biological">Biological</option>
     </select>
     <div class="report-location-name">
       <label for="location-name">Name:</label>
-      <input type="text" id="location-name" />
+      <input type="text" id="location-name" name="locationName" />
     </div>
     <div class="report-description">
       <label for="r-description">Description:</label>
-      <input type="text" id="r-description" />
+      <input type="text" id="report-desc" name="reportDesc" />
     </div>
     <div class="report-submission">
       <input type="submit" value="Submit Report"/>
     </div>
+    <input id="location-lat" type="hidden" name="locationLat">
+    <input id="location-lng" type="hidden" name="locationLng">
   </form>
 
   <script>
@@ -45,10 +47,10 @@
         center: Toronto,
         zoom: 11
       });
+
       infowindow = new google.maps.InfoWindow({
         content: document.getElementById("report-form")
       });
-
 
       map.addListener('click', function(event) {
         addMarker(event.latLng);
@@ -62,6 +64,8 @@
         position: location,
         map: map
       });
+      document.getElementById('location-lat').value = marker.getPosition().lat();
+      document.getElementById('location-lng').value = marker.getPosition().lng();
       markers.push(marker);
       markers[markers.length - 1].addListener('click', function() {
         infowindow.open(map, this);

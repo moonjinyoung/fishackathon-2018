@@ -7,18 +7,24 @@ var HTTP_PORT = process.env.PORT || 8080;
 var uri = 'mongodb://wlto:somethingFunny333@ds231758.mlab.com:31758/fishkatsu';
 
 app.use(express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded());
 
-var documents;
+let db;
 
 // Connects to the database
 MongoClient.connect(uri, (err, client) => {
   // Getting the collection
-  const collection = client.db('fishkatsu').collection('Reports');
+  db = client.db('fishkatsu');
+  const collection = db.collection('Reports');
   collection.find({}).toArray((err, docs) => {
     documents = docs;
   });
   // Close the connection
-  client.close();
+  // client.close();
+  app.listen(HTTP_PORT, () => {
+    console.log('Server listening on port ' + HTTP_PORT);
+  });
 });
 
 // //////////
@@ -38,10 +44,20 @@ app.get('*', (req, res) => {
 // ///////////
 // POST routes
 //
-app.post('/submit', (req, res) => {
-
-});
-
-app.listen(HTTP_PORT, () => {
-  console.log('Server listening on port ' + HTTP_PORT);
+app.post('/submitReport', (req, res) => {
+  let newReport = {
+    'location': {
+      'lat': req.body.locationLat,
+      'lng': req.body.locationLng,
+      'name': req.body.locationName
+    },
+    'type': req.body.reportType,
+    'description': req.body.reportDesc,
+    'datePosted': Date.now(),
+    'resolved': false,
+    'upvotes': 1,
+    'downvotes': 0
+  };
+  db.collection('Reports').insertOne(newReport);
+  res.redirect('back');
 });
