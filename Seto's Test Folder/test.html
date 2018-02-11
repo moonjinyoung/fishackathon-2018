@@ -89,7 +89,7 @@
             });
             markers.push(marker);
             markers[markers.length - 1].addListener('click', function () {
-                let x = markers.length - 1;
+                var x = markers.length - 1;
                 infowindow.open(map, markers[x]);
                 console.log(x);
                 
