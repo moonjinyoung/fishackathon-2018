@@ -88,11 +88,8 @@
                 map: map
             });
             markers.push(marker);
-            markers[markers.length - 1].addListener('click', function () {
-                var x = markers.length - 1;
-                infowindow.open(map, markers[x]);
-                console.log(x);
-                
+            markers[markers.length - 1].addListener('click', function() {
+                infowindow.open(map, this);
             })
         };
 
