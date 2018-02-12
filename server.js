@@ -4,7 +4,9 @@ var MongoClient = require('mongodb').MongoClient;
 var app = express();
 var HTTP_PORT = process.env.PORT || 8080;
 
-var uri = 'mongodb://wlto:somethingFunny333@ds231758.mlab.com:31758/fishkatsu';
+// Database's URI
+// Our URI: mongodb://dbusername:dbpassword@ds231758.mlab.com:31758/fishkatsu
+var uri = '__putyourdatabasesinfohere';
 
 app.use(express.static('public'));
 app.use(express.json());
